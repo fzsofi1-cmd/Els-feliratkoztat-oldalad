@@ -1,0 +1,1996 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Az első működő feliratkozó oldalad útmutatója – Fischer Zsófi</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,600&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ============================================================
+       CSS VARIABLES & RESET
+    ============================================================ */
+    :root {
+      --white:      #FFFFFF;
+      --pink:       #F2A8C4;
+      --lavender:   #C4A8E8;
+      --blue:       #A8C4F0;
+      --gold:       #C9956A;
+      --charcoal:   #2D2D2D;
+      --charcoal-light: #4a4a4a;
+      --glass-bg:   rgba(255,255,255,0.55);
+      --glass-border: rgba(255,255,255,0.75);
+      --shadow-soft: 0 8px 40px rgba(196,168,232,0.18);
+      --shadow-card: 0 4px 32px rgba(196,168,232,0.22);
+      --radius-lg:  24px;
+      --radius-md:  16px;
+      --radius-sm:  10px;
+      --font-serif: 'Cormorant Garamond', Georgia, serif;
+      --font-sans:  'DM Sans', system-ui, sans-serif;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font-sans);
+      color: var(--charcoal);
+      background: var(--white);
+      overflow-x: hidden;
+      line-height: 1.7;
+    }
+
+    img { max-width: 100%; display: block; }
+    a { color: inherit; text-decoration: none; }
+
+    /* ============================================================
+       TYPOGRAPHY
+    ============================================================ */
+    h1, h2, h3, h4 {
+      font-family: var(--font-serif);
+      line-height: 1.2;
+      font-weight: 600;
+    }
+
+    .section-label {
+      font-family: var(--font-sans);
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 0.75rem;
+      display: block;
+    }
+
+    /* ============================================================
+       SCROLL ANIMATIONS
+    ============================================================ */
+    .reveal {
+      opacity: 0;
+      transform: translateY(36px);
+      transition: opacity 0.72s cubic-bezier(.22,.68,0,1.2), transform 0.72s cubic-bezier(.22,.68,0,1.2);
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .reveal-delay-1 { transition-delay: 0.1s; }
+    .reveal-delay-2 { transition-delay: 0.2s; }
+    .reveal-delay-3 { transition-delay: 0.3s; }
+    .reveal-delay-4 { transition-delay: 0.4s; }
+    .reveal-delay-5 { transition-delay: 0.5s; }
+
+    /* ============================================================
+       GEOMETRIC DECORATIONS (SVG-based 3D shapes)
+    ============================================================ */
+    .geo-deco {
+      position: absolute;
+      pointer-events: none;
+      user-select: none;
+      z-index: 0;
+    }
+
+    /* ============================================================
+       NAVBAR
+    ============================================================ */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      padding: 1rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(255,255,255,0.72);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border-bottom: 1px solid rgba(242,168,196,0.18);
+      transition: background 0.3s;
+    }
+    nav .logo {
+      font-family: var(--font-serif);
+      font-size: 1.15rem;
+      font-weight: 600;
+      color: var(--charcoal);
+      letter-spacing: 0.02em;
+    }
+    nav .logo span { color: var(--gold); }
+    nav .nav-cta {
+      background: linear-gradient(135deg, var(--pink), var(--lavender));
+      color: var(--white);
+      font-size: 0.82rem;
+      font-weight: 600;
+      padding: 0.55rem 1.4rem;
+      border-radius: 50px;
+      letter-spacing: 0.04em;
+      transition: opacity 0.2s, transform 0.2s;
+      box-shadow: 0 4px 18px rgba(242,168,196,0.35);
+    }
+    nav .nav-cta:hover { opacity: 0.88; transform: translateY(-1px); }
+
+    /* ============================================================
+       HERO SECTION
+    ============================================================ */
+    #hero {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      padding: 7rem 2rem 5rem;
+      background: linear-gradient(135deg,
+        #fff5f9 0%,
+        #f9f0ff 30%,
+        #eef4ff 60%,
+        #fff8f2 100%
+      );
+    }
+
+    /* Animated gradient orbs */
+    .hero-orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(60px);
+      opacity: 0.55;
+      animation: floatOrb 8s ease-in-out infinite;
+    }
+    .hero-orb-1 {
+      width: 520px; height: 520px;
+      background: radial-gradient(circle, #F2A8C4 0%, transparent 70%);
+      top: -120px; right: -80px;
+      animation-delay: 0s;
+    }
+    .hero-orb-2 {
+      width: 420px; height: 420px;
+      background: radial-gradient(circle, #C4A8E8 0%, transparent 70%);
+      bottom: -100px; left: -60px;
+      animation-delay: 2.5s;
+    }
+    .hero-orb-3 {
+      width: 300px; height: 300px;
+      background: radial-gradient(circle, #A8C4F0 0%, transparent 70%);
+      top: 40%; left: 55%;
+      animation-delay: 5s;
+    }
+    @keyframes floatOrb {
+      0%, 100% { transform: translateY(0) scale(1); }
+      50% { transform: translateY(-28px) scale(1.04); }
+    }
+
+    /* 3D Cube decorations in hero */
+    .hero-shapes {
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      pointer-events: none;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      max-width: 760px;
+      text-align: center;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: var(--glass-bg);
+      backdrop-filter: blur(12px);
+      border: 1px solid var(--glass-border);
+      border-radius: 50px;
+      padding: 0.45rem 1.2rem;
+      font-size: 0.78rem;
+      font-weight: 500;
+      color: var(--charcoal-light);
+      margin-bottom: 1.8rem;
+      box-shadow: 0 2px 16px rgba(242,168,196,0.2);
+    }
+    .hero-badge .dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--pink), var(--lavender));
+      flex-shrink: 0;
+    }
+
+    .hero-title {
+      font-size: clamp(2.6rem, 6vw, 4.4rem);
+      font-weight: 700;
+      color: var(--charcoal);
+      margin-bottom: 1.2rem;
+      line-height: 1.1;
+    }
+    .hero-title .accent-pink { color: var(--pink); }
+    .hero-title .accent-gold { color: var(--gold); }
+
+    .hero-subtitle {
+      font-size: clamp(1rem, 2.2vw, 1.2rem);
+      color: var(--charcoal-light);
+      max-width: 580px;
+      margin: 0 auto 2.4rem;
+      font-weight: 400;
+      line-height: 1.75;
+    }
+
+    .hero-cta-group {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.55rem;
+      background: linear-gradient(135deg, var(--pink) 0%, var(--lavender) 100%);
+      color: var(--white);
+      font-family: var(--font-sans);
+      font-size: 0.95rem;
+      font-weight: 600;
+      padding: 0.9rem 2.2rem;
+      border-radius: 50px;
+      box-shadow: 0 8px 32px rgba(242,168,196,0.45);
+      transition: transform 0.22s, box-shadow 0.22s;
+      letter-spacing: 0.02em;
+      border: none;
+      cursor: pointer;
+    }
+    .btn-primary:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 14px 40px rgba(242,168,196,0.55);
+    }
+    .btn-primary svg { flex-shrink: 0; }
+
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: transparent;
+      color: var(--charcoal);
+      font-size: 0.9rem;
+      font-weight: 500;
+      padding: 0.9rem 1.8rem;
+      border-radius: 50px;
+      border: 1.5px solid rgba(196,168,232,0.5);
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .btn-secondary:hover {
+      border-color: var(--lavender);
+      background: rgba(196,168,232,0.08);
+    }
+
+    .hero-ebook-mockup {
+      position: relative;
+      z-index: 2;
+      margin-top: 3.5rem;
+      display: flex;
+      justify-content: center;
+    }
+
+    .ebook-card {
+      background: var(--glass-bg);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border: 1.5px solid var(--glass-border);
+      border-radius: var(--radius-lg);
+      padding: 2.5rem 2.8rem;
+      max-width: 420px;
+      width: 100%;
+      box-shadow: 0 20px 60px rgba(196,168,232,0.25), 0 2px 8px rgba(242,168,196,0.12);
+      text-align: left;
+    }
+
+    .ebook-card-label {
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 0.6rem;
+    }
+    .ebook-card-title {
+      font-family: var(--font-serif);
+      font-size: 1.55rem;
+      font-weight: 700;
+      color: var(--charcoal);
+      margin-bottom: 0.5rem;
+      line-height: 1.25;
+    }
+    .ebook-card-sub {
+      font-size: 0.85rem;
+      color: var(--charcoal-light);
+      margin-bottom: 1.4rem;
+    }
+    .ebook-card-stats {
+      display: flex;
+      gap: 1.5rem;
+    }
+    .ebook-stat {
+      display: flex;
+      flex-direction: column;
+    }
+    .ebook-stat-num {
+      font-family: var(--font-serif);
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: var(--charcoal);
+      line-height: 1;
+    }
+    .ebook-stat-label {
+      font-size: 0.72rem;
+      color: var(--charcoal-light);
+      margin-top: 0.2rem;
+    }
+    .ebook-card-divider {
+      width: 100%;
+      height: 1px;
+      background: linear-gradient(90deg, var(--pink), var(--lavender), var(--blue));
+      margin: 1.2rem 0;
+      opacity: 0.5;
+    }
+    .ebook-card-author {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .author-avatar {
+      width: 38px; height: 38px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--pink), var(--lavender));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-serif);
+      font-size: 1rem;
+      font-weight: 700;
+      color: white;
+      flex-shrink: 0;
+    }
+    .author-info-name {
+      font-weight: 600;
+      font-size: 0.88rem;
+      color: var(--charcoal);
+    }
+    .author-info-site {
+      font-size: 0.75rem;
+      color: var(--charcoal-light);
+    }
+
+    /* ============================================================
+       SECTION COMMON
+    ============================================================ */
+    section {
+      position: relative;
+      overflow: hidden;
+    }
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+    .section-header {
+      text-align: center;
+      margin-bottom: 3.5rem;
+    }
+    .section-title {
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 700;
+      color: var(--charcoal);
+      margin-bottom: 0.8rem;
+    }
+    .section-desc {
+      font-size: 1rem;
+      color: var(--charcoal-light);
+      max-width: 560px;
+      margin: 0 auto;
+      line-height: 1.75;
+    }
+
+    /* ============================================================
+       WHAT YOU'LL LEARN — BENEFIT CARDS
+    ============================================================ */
+    #benefits {
+      padding: 6rem 0;
+      background: var(--white);
+    }
+
+    .benefits-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1.6rem;
+    }
+
+    .benefit-card {
+      background: var(--glass-bg);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1.5px solid var(--glass-border);
+      border-radius: var(--radius-lg);
+      padding: 2rem 1.8rem;
+      box-shadow: var(--shadow-card);
+      transition: transform 0.28s, box-shadow 0.28s;
+      position: relative;
+      overflow: hidden;
+    }
+    .benefit-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+    }
+    .benefit-card:nth-child(1)::before { background: linear-gradient(90deg, var(--pink), var(--lavender)); }
+    .benefit-card:nth-child(2)::before { background: linear-gradient(90deg, var(--lavender), var(--blue)); }
+    .benefit-card:nth-child(3)::before { background: linear-gradient(90deg, var(--blue), var(--pink)); }
+    .benefit-card:nth-child(4)::before { background: linear-gradient(90deg, var(--gold), var(--pink)); }
+
+    .benefit-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 16px 48px rgba(196,168,232,0.3);
+    }
+
+    .benefit-icon {
+      width: 52px; height: 52px;
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1.2rem;
+      font-size: 1.5rem;
+    }
+    .benefit-card:nth-child(1) .benefit-icon { background: linear-gradient(135deg, rgba(242,168,196,0.25), rgba(242,168,196,0.1)); }
+    .benefit-card:nth-child(2) .benefit-icon { background: linear-gradient(135deg, rgba(196,168,232,0.25), rgba(196,168,232,0.1)); }
+    .benefit-card:nth-child(3) .benefit-icon { background: linear-gradient(135deg, rgba(168,196,240,0.25), rgba(168,196,240,0.1)); }
+    .benefit-card:nth-child(4) .benefit-icon { background: linear-gradient(135deg, rgba(201,149,106,0.25), rgba(201,149,106,0.1)); }
+
+    .benefit-title {
+      font-family: var(--font-serif);
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: var(--charcoal);
+      margin-bottom: 0.6rem;
+    }
+    .benefit-desc {
+      font-size: 0.88rem;
+      color: var(--charcoal-light);
+      line-height: 1.7;
+    }
+
+    /* ============================================================
+       CONTENT PREVIEW — CHAPTERS
+    ============================================================ */
+    #chapters {
+      padding: 6rem 0;
+      background: linear-gradient(160deg, #fff5f9 0%, #f9f0ff 50%, #eef4ff 100%);
+    }
+
+    .chapters-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+      align-items: start;
+    }
+
+    .chapters-intro {
+      position: sticky;
+      top: 6rem;
+    }
+
+    .chapters-intro .section-title { text-align: left; }
+    .chapters-intro .section-desc { text-align: left; margin: 0 0 2rem; }
+
+    .chapters-intro-highlight {
+      background: var(--glass-bg);
+      backdrop-filter: blur(12px);
+      border: 1.5px solid var(--glass-border);
+      border-radius: var(--radius-md);
+      padding: 1.4rem 1.6rem;
+      box-shadow: var(--shadow-soft);
+    }
+    .chapters-intro-highlight p {
+      font-size: 0.88rem;
+      color: var(--charcoal-light);
+      line-height: 1.7;
+    }
+    .chapters-intro-highlight strong { color: var(--charcoal); }
+
+    .chapter-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .chapter-item {
+      background: var(--glass-bg);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1.5px solid var(--glass-border);
+      border-radius: var(--radius-md);
+      padding: 1.4rem 1.6rem;
+      box-shadow: var(--shadow-card);
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+      transition: transform 0.24s, box-shadow 0.24s;
+      cursor: default;
+    }
+    .chapter-item:hover {
+      transform: translateX(6px);
+      box-shadow: 0 8px 32px rgba(196,168,232,0.28);
+    }
+
+    .chapter-num {
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-serif);
+      font-size: 0.95rem;
+      font-weight: 700;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+    .chapter-item:nth-child(1) .chapter-num { background: linear-gradient(135deg, var(--pink), #f7c5d8); color: white; }
+    .chapter-item:nth-child(2) .chapter-num { background: linear-gradient(135deg, var(--lavender), #d8c4f5); color: white; }
+    .chapter-item:nth-child(3) .chapter-num { background: linear-gradient(135deg, var(--blue), #c4d8f5); color: white; }
+    .chapter-item:nth-child(4) .chapter-num { background: linear-gradient(135deg, var(--gold), #ddb88a); color: white; }
+    .chapter-item:nth-child(5) .chapter-num { background: linear-gradient(135deg, var(--pink), var(--lavender)); color: white; }
+
+    .chapter-info {}
+    .chapter-title {
+      font-family: var(--font-serif);
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: var(--charcoal);
+      margin-bottom: 0.3rem;
+    }
+    .chapter-desc {
+      font-size: 0.82rem;
+      color: var(--charcoal-light);
+      line-height: 1.6;
+    }
+    .chapter-time {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      font-size: 0.72rem;
+      color: var(--gold);
+      font-weight: 600;
+      margin-top: 0.4rem;
+    }
+
+    /* ============================================================
+       WHAT'S FREE — FEATURE TABLE
+    ============================================================ */
+    #features {
+      padding: 5rem 0;
+      background: var(--white);
+    }
+
+    .features-table-wrap {
+      max-width: 680px;
+      margin: 0 auto;
+    }
+
+    .features-table {
+      width: 100%;
+      border-collapse: collapse;
+      background: var(--glass-bg);
+      backdrop-filter: blur(16px);
+      border: 1.5px solid var(--glass-border);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      box-shadow: var(--shadow-card);
+    }
+    .features-table thead tr {
+      background: linear-gradient(135deg, rgba(242,168,196,0.25), rgba(196,168,232,0.25));
+    }
+    .features-table th {
+      padding: 1rem 1.4rem;
+      text-align: left;
+      font-family: var(--font-sans);
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--charcoal);
+    }
+    .features-table td {
+      padding: 0.9rem 1.4rem;
+      font-size: 0.9rem;
+      color: var(--charcoal);
+      border-top: 1px solid rgba(196,168,232,0.15);
+    }
+    .features-table tr:hover td {
+      background: rgba(242,168,196,0.06);
+    }
+    .features-table .limit-badge {
+      display: inline-block;
+      background: linear-gradient(135deg, rgba(196,168,232,0.3), rgba(168,196,240,0.3));
+      color: var(--charcoal);
+      font-size: 0.78rem;
+      font-weight: 600;
+      padding: 0.2rem 0.75rem;
+      border-radius: 50px;
+    }
+    .features-table .limit-unlimited {
+      background: linear-gradient(135deg, rgba(242,168,196,0.3), rgba(196,168,232,0.3));
+    }
+
+    /* ============================================================
+       PULL QUOTE
+    ============================================================ */
+    #quote {
+      padding: 6rem 0;
+      background: linear-gradient(135deg,
+        rgba(242,168,196,0.15) 0%,
+        rgba(196,168,232,0.2) 40%,
+        rgba(168,196,240,0.15) 100%
+      );
+      position: relative;
+    }
+
+    .quote-orb-1 {
+      position: absolute;
+      width: 400px; height: 400px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(242,168,196,0.3) 0%, transparent 70%);
+      top: -100px; right: -80px;
+      filter: blur(50px);
+      pointer-events: none;
+    }
+    .quote-orb-2 {
+      position: absolute;
+      width: 300px; height: 300px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(168,196,240,0.3) 0%, transparent 70%);
+      bottom: -80px; left: -60px;
+      filter: blur(40px);
+      pointer-events: none;
+    }
+
+    .quote-inner {
+      position: relative;
+      z-index: 1;
+      max-width: 780px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .quote-mark {
+      font-family: var(--font-serif);
+      font-size: 8rem;
+      line-height: 0.6;
+      color: var(--pink);
+      opacity: 0.4;
+      margin-bottom: 1rem;
+      display: block;
+      font-weight: 700;
+    }
+
+    .quote-text {
+      font-family: var(--font-serif);
+      font-size: clamp(1.5rem, 3.5vw, 2.4rem);
+      font-weight: 600;
+      font-style: italic;
+      color: var(--charcoal);
+      line-height: 1.45;
+      margin-bottom: 1.8rem;
+    }
+
+    .quote-text .highlight {
+      background: linear-gradient(135deg, var(--pink), var(--lavender));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .quote-attribution {
+      font-size: 0.85rem;
+      color: var(--charcoal-light);
+      font-weight: 500;
+    }
+    .quote-attribution strong { color: var(--gold); }
+
+    /* ============================================================
+       ABOUT / WHO IS THIS FOR
+    ============================================================ */
+    #about {
+      padding: 6rem 0;
+      background: var(--white);
+    }
+
+    .about-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: center;
+    }
+
+    .about-visual {
+      position: relative;
+    }
+
+    .about-card-main {
+      background: linear-gradient(135deg,
+        rgba(242,168,196,0.18) 0%,
+        rgba(196,168,232,0.22) 50%,
+        rgba(168,196,240,0.18) 100%
+      );
+      border: 1.5px solid var(--glass-border);
+      border-radius: var(--radius-lg);
+      padding: 2.5rem;
+      backdrop-filter: blur(16px);
+      box-shadow: var(--shadow-card);
+    }
+
+    .about-avatar-large {
+      width: 72px; height: 72px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--pink), var(--lavender));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-serif);
+      font-size: 2rem;
+      font-weight: 700;
+      color: white;
+      margin-bottom: 1.2rem;
+      box-shadow: 0 8px 24px rgba(242,168,196,0.4);
+    }
+
+    .about-card-name {
+      font-family: var(--font-serif);
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--charcoal);
+      margin-bottom: 0.3rem;
+    }
+    .about-card-role {
+      font-size: 0.82rem;
+      color: var(--gold);
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      margin-bottom: 1rem;
+    }
+    .about-card-bio {
+      font-size: 0.9rem;
+      color: var(--charcoal-light);
+      line-height: 1.75;
+    }
+
+    .about-floating-tag {
+      position: absolute;
+      background: var(--glass-bg);
+      backdrop-filter: blur(12px);
+      border: 1.5px solid var(--glass-border);
+      border-radius: var(--radius-sm);
+      padding: 0.6rem 1rem;
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--charcoal);
+      box-shadow: var(--shadow-soft);
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+    .about-floating-tag-1 {
+      top: -18px; right: -18px;
+    }
+    .about-floating-tag-2 {
+      bottom: -18px; left: -18px;
+    }
+
+    .about-text .section-title { text-align: left; }
+    .about-text .section-label { text-align: left; }
+
+    .about-list {
+      list-style: none;
+      margin-top: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.9rem;
+    }
+    .about-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+      font-size: 0.92rem;
+      color: var(--charcoal-light);
+      line-height: 1.6;
+    }
+    .about-list li .check-icon {
+      width: 22px; height: 22px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--pink), var(--lavender));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+    .about-list li .check-icon svg {
+      width: 12px; height: 12px;
+      stroke: white;
+      stroke-width: 2.5;
+    }
+
+    /* ============================================================
+       STEPS SUMMARY
+    ============================================================ */
+    #steps {
+      padding: 6rem 0;
+      background: linear-gradient(160deg, #f9f0ff 0%, #eef4ff 50%, #fff5f9 100%);
+    }
+
+    .steps-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.5rem;
+      margin-top: 1rem;
+    }
+
+    .step-card {
+      background: var(--glass-bg);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1.5px solid var(--glass-border);
+      border-radius: var(--radius-lg);
+      padding: 1.8rem 1.6rem;
+      box-shadow: var(--shadow-card);
+      transition: transform 0.28s, box-shadow 0.28s;
+      position: relative;
+    }
+    .step-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 16px 48px rgba(196,168,232,0.28);
+    }
+
+    .step-number {
+      font-family: var(--font-serif);
+      font-size: 3.5rem;
+      font-weight: 700;
+      line-height: 1;
+      margin-bottom: 0.8rem;
+      background: linear-gradient(135deg, var(--pink), var(--lavender));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      opacity: 0.6;
+    }
+    .step-card:nth-child(2) .step-number {
+      background: linear-gradient(135deg, var(--lavender), var(--blue));
+      -webkit-background-clip: text;
+      background-clip: text;
+    }
+    .step-card:nth-child(3) .step-number {
+      background: linear-gradient(135deg, var(--blue), var(--pink));
+      -webkit-background-clip: text;
+      background-clip: text;
+    }
+    .step-card:nth-child(4) .step-number {
+      background: linear-gradient(135deg, var(--gold), var(--pink));
+      -webkit-background-clip: text;
+      background-clip: text;
+    }
+
+    .step-title {
+      font-family: var(--font-serif);
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--charcoal);
+      margin-bottom: 0.5rem;
+    }
+    .step-desc {
+      font-size: 0.84rem;
+      color: var(--charcoal-light);
+      line-height: 1.65;
+    }
+    .step-time {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      margin-top: 0.8rem;
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: var(--gold);
+      background: rgba(201,149,106,0.1);
+      padding: 0.25rem 0.7rem;
+      border-radius: 50px;
+    }
+
+    /* ============================================================
+       PRO TIPS
+    ============================================================ */
+    #tips {
+      padding: 5rem 0;
+      background: var(--white);
+    }
+
+    .tips-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .tip-card {
+      background: var(--glass-bg);
+      backdrop-filter: blur(16px);
+      border: 1.5px solid var(--glass-border);
+      border-radius: var(--radius-md);
+      padding: 1.6rem 1.8rem;
+      box-shadow: var(--shadow-soft);
+      display: flex;
+      gap: 1rem;
+      align-items: flex-start;
+      transition: transform 0.24s;
+    }
+    .tip-card:hover { transform: translateY(-4px); }
+
+    .tip-icon-wrap {
+      width: 44px; height: 44px;
+      border-radius: var(--radius-sm);
+      background: linear-gradient(135deg, rgba(201,149,106,0.2), rgba(242,168,196,0.2));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      font-size: 1.2rem;
+    }
+    .tip-content {}
+    .tip-label {
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 0.35rem;
+    }
+    .tip-text {
+      font-size: 0.88rem;
+      color: var(--charcoal-light);
+      line-height: 1.7;
+    }
+
+    /* ============================================================
+       NEXT STEPS / UPSELL
+    ============================================================ */
+    #nextsteps {
+      padding: 5rem 0;
+      background: linear-gradient(160deg, #fff5f9 0%, #f9f0ff 60%, #eef4ff 100%);
+    }
+
+    .nextsteps-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.2rem;
+      margin-top: 1rem;
+    }
+
+    .nextstep-item {
+      background: var(--glass-bg);
+      backdrop-filter: blur(12px);
+      border: 1.5px solid var(--glass-border);
+      border-radius: var(--radius-md);
+      padding: 1.4rem 1.5rem;
+      display: flex;
+      align-items: flex-start;
+      gap: 0.8rem;
+      box-shadow: var(--shadow-soft);
+      transition: transform 0.22s;
+    }
+    .nextstep-item:hover { transform: translateY(-3px); }
+
+    .nextstep-dot {
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      margin-top: 5px;
+    }
+    .nextstep-item:nth-child(1) .nextstep-dot { background: var(--pink); }
+    .nextstep-item:nth-child(2) .nextstep-dot { background: var(--lavender); }
+    .nextstep-item:nth-child(3) .nextstep-dot { background: var(--blue); }
+    .nextstep-item:nth-child(4) .nextstep-dot { background: var(--gold); }
+
+    .nextstep-text {
+      font-size: 0.88rem;
+      color: var(--charcoal-light);
+      line-height: 1.6;
+    }
+    .nextstep-text strong { color: var(--charcoal); }
+
+    /* ============================================================
+       CTA SECTION
+    ============================================================ */
+    #cta {
+      padding: 7rem 0;
+      background: linear-gradient(135deg,
+        rgba(242,168,196,0.2) 0%,
+        rgba(196,168,232,0.25) 40%,
+        rgba(168,196,240,0.2) 100%
+      );
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cta-orb-1 {
+      position: absolute;
+      width: 500px; height: 500px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(242,168,196,0.35) 0%, transparent 70%);
+      top: -150px; right: -100px;
+      filter: blur(60px);
+      pointer-events: none;
+    }
+    .cta-orb-2 {
+      position: absolute;
+      width: 400px; height: 400px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(168,196,240,0.35) 0%, transparent 70%);
+      bottom: -120px; left: -80px;
+      filter: blur(50px);
+      pointer-events: none;
+    }
+
+    .cta-inner {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      max-width: 660px;
+      margin: 0 auto;
+    }
+
+    .cta-title {
+      font-family: var(--font-serif);
+      font-size: clamp(2rem, 4.5vw, 3.2rem);
+      font-weight: 700;
+      color: var(--charcoal);
+      margin-bottom: 1rem;
+      line-height: 1.2;
+    }
+    .cta-desc {
+      font-size: 1rem;
+      color: var(--charcoal-light);
+      margin-bottom: 2.4rem;
+      line-height: 1.75;
+    }
+
+    .cta-form {
+      display: flex;
+      gap: 0.75rem;
+      max-width: 480px;
+      margin: 0 auto 1.2rem;
+      flex-wrap: wrap;
+    }
+    .cta-input {
+      flex: 1;
+      min-width: 200px;
+      padding: 0.9rem 1.4rem;
+      border-radius: 50px;
+      border: 1.5px solid rgba(196,168,232,0.4);
+      background: rgba(255,255,255,0.8);
+      backdrop-filter: blur(8px);
+      font-family: var(--font-sans);
+      font-size: 0.9rem;
+      color: var(--charcoal);
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .cta-input:focus { border-color: var(--lavender); }
+    .cta-input::placeholder { color: #aaa; }
+
+    .cta-note {
+      font-size: 0.78rem;
+      color: var(--charcoal-light);
+      opacity: 0.7;
+    }
+
+    /* ============================================================
+       FOOTER
+    ============================================================ */
+    footer {
+      padding: 3rem 2rem;
+      background: var(--white);
+      border-top: 1px solid rgba(196,168,232,0.18);
+    }
+
+    .footer-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+    }
+
+    .footer-logo {
+      font-family: var(--font-serif);
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--charcoal);
+    }
+    .footer-logo span { color: var(--gold); }
+
+    .footer-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+    .footer-links a {
+      font-size: 0.82rem;
+      color: var(--charcoal-light);
+      transition: color 0.2s;
+    }
+    .footer-links a:hover { color: var(--pink); }
+
+    .footer-copy {
+      font-size: 0.78rem;
+      color: var(--charcoal-light);
+      opacity: 0.65;
+    }
+
+    /* ============================================================
+       3D GEOMETRIC SHAPES (CSS-only)
+    ============================================================ */
+    .shape-cube {
+      position: absolute;
+      pointer-events: none;
+      user-select: none;
+    }
+
+    /* ============================================================
+       RESPONSIVE
+    ============================================================ */
+    @media (max-width: 900px) {
+      .chapters-layout { grid-template-columns: 1fr; }
+      .chapters-intro { position: static; }
+      .about-layout { grid-template-columns: 1fr; }
+      .about-floating-tag-1, .about-floating-tag-2 { display: none; }
+    }
+
+    @media (max-width: 640px) {
+      nav { padding: 0.85rem 1.2rem; }
+      .hero-title { font-size: 2.2rem; }
+      .hero-cta-group { flex-direction: column; align-items: stretch; }
+      .btn-primary, .btn-secondary { justify-content: center; }
+      .ebook-card { padding: 1.8rem 1.5rem; }
+      .ebook-card-stats { gap: 1rem; }
+      .cta-form { flex-direction: column; }
+      .cta-input { min-width: unset; }
+      .footer-inner { flex-direction: column; align-items: flex-start; }
+      .footer-links { flex-wrap: wrap; gap: 1rem; }
+      .section-title { font-size: 1.9rem; }
+    }
+
+    /* ============================================================
+       DECORATIVE GEOMETRIC SHAPES (SVG inline)
+    ============================================================ */
+    .deco-shape {
+      position: absolute;
+      pointer-events: none;
+      user-select: none;
+      opacity: 0.55;
+      animation: floatShape 7s ease-in-out infinite;
+    }
+    @keyframes floatShape {
+      0%, 100% { transform: translateY(0) rotate(0deg); }
+      50% { transform: translateY(-14px) rotate(6deg); }
+    }
+    .deco-shape-2 { animation-delay: 2s; animation-duration: 9s; }
+    .deco-shape-3 { animation-delay: 4s; animation-duration: 6s; }
+    .deco-shape-4 { animation-delay: 1s; animation-duration: 8s; }
+
+    /* Gradient text utility */
+    .gradient-text {
+      background: linear-gradient(135deg, var(--pink), var(--lavender));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .gradient-text-gold {
+      background: linear-gradient(135deg, var(--gold), #e8b88a);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    /* Divider */
+    .gradient-divider {
+      width: 60px;
+      height: 3px;
+      background: linear-gradient(90deg, var(--pink), var(--lavender), var(--blue));
+      border-radius: 2px;
+      margin: 0.8rem auto 0;
+    }
+    .gradient-divider-left { margin: 0.8rem 0 0; }
+  </style>
+</head>
+<body>
+
+  <!-- ============================================================
+       NAVBAR
+  ============================================================ -->
+  <nav>
+    <div class="logo">Fischer <span>Zsófi</span></div>
+    <a href="#cta" class="nav-cta">Ingyenes útmutató ↓</a>
+  </nav>
+
+  <!-- ============================================================
+       HERO SECTION
+  ============================================================ -->
+  <section id="hero">
+    <!-- Orbs -->
+    <div class="hero-orb hero-orb-1"></div>
+    <div class="hero-orb hero-orb-2"></div>
+    <div class="hero-orb hero-orb-3"></div>
+
+    <!-- Decorative 3D-style shapes -->
+    <svg class="deco-shape" style="top:12%;left:5%;width:80px;height:80px;" viewBox="0 0 80 80" fill="none">
+      <rect x="10" y="20" width="44" height="44" rx="6" fill="url(#g1)" opacity="0.7"/>
+      <rect x="26" y="8" width="44" height="44" rx="6" fill="url(#g2)" opacity="0.4"/>
+      <defs>
+        <linearGradient id="g1" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stop-color="#F2A8C4"/>
+          <stop offset="100%" stop-color="#C4A8E8"/>
+        </linearGradient>
+        <linearGradient id="g2" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stop-color="#C4A8E8"/>
+          <stop offset="100%" stop-color="#A8C4F0"/>
+        </linearGradient>
+      </defs>
+    </svg>
+
+    <svg class="deco-shape deco-shape-2" style="top:60%;right:6%;width:70px;height:70px;" viewBox="0 0 70 70" fill="none">
+      <circle cx="35" cy="35" r="28" fill="url(#g3)" opacity="0.65"/>
+      <circle cx="35" cy="35" r="18" fill="url(#g4)" opacity="0.4"/>
+      <defs>
+        <linearGradient id="g3" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stop-color="#A8C4F0"/>
+          <stop offset="100%" stop-color="#C4A8E8"/>
+        </linearGradient>
+        <linearGradient id="g4" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stop-color="#F2A8C4"/>
+          <stop offset="100%" stop-color="#A8C4F0"/>
+        </linearGradient>
+      </defs>
+    </svg>
+
+    <svg class="deco-shape deco-shape-3" style="bottom:15%;left:8%;width:60px;height:60px;" viewBox="0 0 60 60" fill="none">
+      <polygon points="30,4 56,46 4,46" fill="url(#g5)" opacity="0.6"/>
+      <defs>
+        <linearGradient id="g5" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stop-color="#C9956A"/>
+          <stop offset="100%" stop-color="#F2A8C4"/>
+        </linearGradient>
+      </defs>
+    </svg>
+
+    <svg class="deco-shape deco-shape-4" style="top:20%;right:12%;width:55px;height:55px;" viewBox="0 0 55 55" fill="none">
+      <rect x="5" y="5" width="45" height="45" rx="12" fill="url(#g6)" opacity="0.55" transform="rotate(15 27.5 27.5)"/>
+      <defs>
+        <linearGradient id="g6" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stop-color="#C4A8E8"/>
+          <stop offset="100%" stop-color="#F2A8C4"/>
+        </linearGradient>
+      </defs>
+    </svg>
+
+    <div class="container">
+      <div class="hero-content reveal">
+        <div class="hero-badge">
+          <span class="dot"></span>
+          Ingyenes útmutató kezdő vállalkozóknak
+        </div>
+
+        <h1 class="hero-title">
+          Az első <span class="accent-pink">működő</span><br/>
+          feliratkozó oldalad<br/>
+          <span class="accent-gold">útmutatója</span>
+        </h1>
+
+        <p class="hero-subtitle">
+          Építsük fel együtt, ingyenes Systeme.io fiókkal — technikai előismeret nélkül,
+          egyetlen délután alatt. Legyen végre egy rendszered, ami dolgozik helyetted.
+        </p>
+
+        <div class="hero-cta-group">
+          <a href="#cta" class="btn-primary">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Töltsd le ingyen
+          </a>
+          <a href="#chapters" class="btn-secondary">
+            Megnézem a tartalmat →
+          </a>
+        </div>
+      </div>
+
+      <div class="hero-ebook-mockup reveal reveal-delay-2">
+        <div class="ebook-card">
+          <div class="ebook-card-label">Ingyenes eBook</div>
+          <div class="ebook-card-title">Az első működő feliratkozó oldalad útmutatója</div>
+          <div class="ebook-card-sub">Systeme.io alapkurzus kezdőknek</div>
+          <div class="ebook-card-stats">
+            <div class="ebook-stat">
+              <span class="ebook-stat-num">4</span>
+              <span class="ebook-stat-label">Fejezet</span>
+            </div>
+            <div class="ebook-stat">
+              <span class="ebook-stat-num">~50</span>
+              <span class="ebook-stat-label">Perc alatt kész</span>
+            </div>
+            <div class="ebook-stat">
+              <span class="ebook-stat-num">100%</span>
+              <span class="ebook-stat-label">Ingyenes</span>
+            </div>
+          </div>
+          <div class="ebook-card-divider"></div>
+          <div class="ebook-card-author">
+            <div class="author-avatar">Z</div>
+            <div>
+              <div class="author-info-name">Fischer Zsófi</div>
+              <div class="author-info-site">tanfolyamokonline.hu</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       WHAT YOU'LL LEARN — BENEFITS
+  ============================================================ -->
+  <section id="benefits">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="section-label">Mit tanulsz meg?</span>
+        <h2 class="section-title">Mire leszel képes az útmutató végére?</h2>
+        <div class="gradient-divider"></div>
+        <p class="section-desc" style="margin-top:1rem;">
+          Négy konkrét eredmény, amit az útmutató elvégzése után magadénak tudhatsz — technikai előismeret nélkül.
+        </p>
+      </div>
+
+      <div class="benefits-grid">
+        <div class="benefit-card reveal reveal-delay-1">
+          <div class="benefit-icon">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#F2A8C4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          </div>
+          <div class="benefit-title">Aktív Systeme.io fiók</div>
+          <div class="benefit-desc">Lesz egy aktív, ingyenes Systeme.io fiókod — az online értékesítés all-in-one platformja, teljesen ingyen.</div>
+        </div>
+
+        <div class="benefit-card reveal reveal-delay-2">
+          <div class="benefit-icon">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#C4A8E8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+          </div>
+          <div class="benefit-title">Működő feliratkozó oldal</div>
+          <div class="benefit-desc">Felépítesz egy feliratkozó oldalt, ami gyűjti az érdeklődők e-mail címét — ez a listaépítés és az online bevétel alapja.</div>
+        </div>
+
+        <div class="benefit-card reveal reveal-delay-3">
+          <div class="benefit-icon">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#A8C4F0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          </div>
+          <div class="benefit-title">Automatikus üdvözlő e-mail</div>
+          <div class="benefit-desc">Beállítasz egy automatikus üdvözlő e-mailt, ami azonnal kimegy a feliratkozóknak — anélkül, hogy te bármit tennél.</div>
+        </div>
+
+        <div class="benefit-card reveal reveal-delay-4">
+          <div class="benefit-icon">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#C9956A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+          </div>
+          <div class="benefit-title">Teljes rendszerértés</div>
+          <div class="benefit-desc">Megérted, hogyan kapcsolódik mindez egymáshoz — és mi jöhet ezután, hogy értékesítési géppé alakítsd a rendszeredet.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       CONTENT PREVIEW — CHAPTERS
+  ============================================================ -->
+  <section id="chapters">
+    <!-- Decorative shapes -->
+    <svg class="deco-shape" style="top:10%;right:3%;width:90px;height:90px;opacity:0.3;" viewBox="0 0 90 90" fill="none">
+      <rect x="5" y="15" width="55" height="55" rx="8" fill="#C4A8E8" opacity="0.6"/>
+      <rect x="30" y="5" width="55" height="55" rx="8" fill="#A8C4F0" opacity="0.4"/>
+    </svg>
+
+    <div class="container">
+      <div class="chapters-layout">
+        <div class="chapters-intro">
+          <div class="reveal">
+            <span class="section-label">Tartalom előnézet</span>
+            <h2 class="section-title">4 lépés, ~50 perc,<br/>egy <span class="gradient-text">működő rendszer</span></h2>
+            <div class="gradient-divider-left"></div>
+            <p class="section-desc" style="margin-top:1rem;">
+              Az útmutató egyetlen, konkrét célra készült: felépítjük együtt az első, valóban működő feliratkozó oldaladat — ingyenesen.
+            </p>
+          </div>
+          <div class="chapters-intro-highlight reveal reveal-delay-2" style="margin-top:1.8rem;">
+            <p><strong>Nem kell semmilyen technikai előismereted.</strong> Ha tudsz kattintani és szöveget beírni, elég. Sokan ott akadnak el, hogy nem tudják, hol kezdjék el — ezen változtatunk most.</p>
+          </div>
+        </div>
+
+        <div class="chapter-list">
+          <div class="chapter-item reveal reveal-delay-1">
+            <div class="chapter-num">1</div>
+            <div class="chapter-info">
+              <div class="chapter-title">Mi az a Systeme.io, és miért érdemes?</div>
+              <div class="chapter-desc">Megismered az all-in-one platformot, ami egyetlen helyen tartalmaz mindent: feliratkozó oldalakat, e-mail küldést, kurzus-felületet és automatizmusokat.</div>
+              <div class="chapter-time">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+                ~5 perc
+              </div>
+            </div>
+          </div>
+
+          <div class="chapter-item reveal reveal-delay-2">
+            <div class="chapter-num">2</div>
+            <div class="chapter-info">
+              <div class="chapter-title">Fióknyitás, 5 perc alatt kész</div>
+              <div class="chapter-desc">A regisztráció egyszerű és teljesen ingyenes — hitelkártyát nem kérnek. Lépésről lépésre végigvezetlek a folyamaton.</div>
+              <div class="chapter-time">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+                ~5 perc
+              </div>
+            </div>
+          </div>
+
+          <div class="chapter-item reveal reveal-delay-3">
+            <div class="chapter-num">3</div>
+            <div class="chapter-info">
+              <div class="chapter-title">Az első feliratkozó oldalad felépítése</div>
+              <div class="chapter-desc">Funnel létrehozása, opt-in oldal szerkesztése, főcím és alcím megírása, form beállítása, köszönőoldal és közzététel — minden lépés részletesen.</div>
+              <div class="chapter-time">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+                ~20 perc
+              </div>
+            </div>
+          </div>
+
+          <div class="chapter-item reveal reveal-delay-4">
+            <div class="chapter-num">4</div>
+            <div class="chapter-info">
+              <div class="chapter-title">Az első automatikus e-mail beállítása</div>
+              <div class="chapter-desc">Ez az a pillanat, amikor rákattansz a rendszer varázsára. Feliratkozik valaki, és automatikusan kap egy e-mailt tőled — anélkül, hogy te bármit tennél.</div>
+              <div class="chapter-time">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+                ~20 perc
+              </div>
+            </div>
+          </div>
+
+          <div class="chapter-item reveal reveal-delay-5">
+            <div class="chapter-num">✓</div>
+            <div class="chapter-info">
+              <div class="chapter-title">Összefoglalás & Következő lépések</div>
+              <div class="chapter-desc">Mit csináltál ma, és hogyan alakítsd ezt a rendszert értékesítési gépé — sales oldal, e-mail sorozat, evergreen funnel.</div>
+              <div class="chapter-time">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+                ~5 perc
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       WHAT'S FREE — SYSTEME.IO TABLE
+  ============================================================ -->
+  <section id="features">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="section-label">Systeme.io ingyenes csomag</span>
+        <h2 class="section-title">Mit tudsz csinálni <span class="gradient-text">ingyen?</span></h2>
+        <div class="gradient-divider"></div>
+        <p class="section-desc" style="margin-top:1rem;">
+          Az ingyenes fiókkal már felépítheted az első értékesítési rendszeredet — nem kell semmit fizetned, amíg el nem indulsz.
+        </p>
+      </div>
+
+      <div class="features-table-wrap reveal reveal-delay-1">
+        <table class="features-table">
+          <thead>
+            <tr>
+              <th>Mit tudsz csinálni?</th>
+              <th>Limit</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <span style="display:flex;align-items:center;gap:0.5rem;">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#F2A8C4" stroke-width="2.2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+                  Feliratkozó oldalak
+                </span>
+              </td>
+              <td><span class="limit-badge limit-unlimited">Korlátlan</span></td>
+            </tr>
+            <tr>
+              <td>
+                <span style="display:flex;align-items:center;gap:0.5rem;">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#C4A8E8" stroke-width="2.2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                  Kapcsolatok (feliratkozók) tárolása
+                </span>
+              </td>
+              <td><span class="limit-badge">2 000 fő</span></td>
+            </tr>
+            <tr>
+              <td>
+                <span style="display:flex;align-items:center;gap:0.5rem;">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#A8C4F0" stroke-width="2.2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                  E-mail küldés
+                </span>
+              </td>
+              <td><span class="limit-badge limit-unlimited">Korlátlan</span></td>
+            </tr>
+            <tr>
+              <td>
+                <span style="display:flex;align-items:center;gap:0.5rem;">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#C9956A" stroke-width="2.2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+                  Sales (értékesítési) oldalak
+                </span>
+              </td>
+              <td><span class="limit-badge limit-unlimited">Korlátlan</span></td>
+            </tr>
+            <tr>
+              <td>
+                <span style="display:flex;align-items:center;gap:0.5rem;">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#F2A8C4" stroke-width="2.2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+                  Online kurzus feltöltése
+                </span>
+              </td>
+              <td><span class="limit-badge">1 kurzus</span></td>
+            </tr>
+            <tr>
+              <td>
+                <span style="display:flex;align-items:center;gap:0.5rem;">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#C4A8E8" stroke-width="2.2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+                  Automatikus e-mail sorozatok
+                </span>
+              </td>
+              <td><span class="limit-badge">1 kampány</span></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <p style="text-align:center;margin-top:1.2rem;font-size:0.82rem;color:var(--charcoal-light);">
+          <strong style="color:var(--gold);">Pro tipp:</strong> 2 000 feliratkozó bőven elég az induláshoz. A legtöbb vállalkozó ezzel a számmal már stabil bevételt tud termelni.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       PULL QUOTE
+  ============================================================ -->
+  <section id="quote">
+    <div class="quote-orb-1"></div>
+    <div class="quote-orb-2"></div>
+
+    <!-- Decorative shapes -->
+    <svg class="deco-shape deco-shape-2" style="top:15%;left:5%;width:70px;height:70px;opacity:0.35;" viewBox="0 0 70 70" fill="none">
+      <circle cx="35" cy="35" r="30" fill="none" stroke="#F2A8C4" stroke-width="2"/>
+      <circle cx="35" cy="35" r="20" fill="none" stroke="#C4A8E8" stroke-width="1.5"/>
+      <circle cx="35" cy="35" r="10" fill="#A8C4F0" opacity="0.5"/>
+    </svg>
+
+    <div class="container">
+      <div class="quote-inner reveal">
+        <span class="quote-mark">"</span>
+        <p class="quote-text">
+          Ez az a pillanat, amikor az emberek általában <span class="highlight">„rákattannak" a rendszer varázsára</span> — feliratkozik valaki, és automatikusan kap egy e-mailt tőled, anélkül, hogy te bármit tennél.
+        </p>
+        <div class="quote-attribution">— <strong>Fischer Zsófi</strong>, tanfolyamokonline.hu</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       ABOUT / WHO IS THIS FOR
+  ============================================================ -->
+  <section id="about">
+    <div class="container">
+      <div class="about-layout">
+        <div class="about-visual reveal">
+          <div class="about-card-main">
+            <div class="about-avatar-large">Z</div>
+            <div class="about-card-name">Fischer Zsófi</div>
+            <div class="about-card-role">Online Vállalkozói Mentor · tanfolyamokonline.hu</div>
+            <p class="about-card-bio">
+              Örülök, hogy letöltötted ezt az útmutatót — ez azt jelenti, hogy komolyan gondolod az online jelenléted felépítését. Sokan ott akadnak el, hogy nem tudják, hol kezdjék el. Van egy ötletük, van egy termékük vagy tudásuk — de a technikai háttér riasztónak tűnik. Ezen változtatok most.
+            </p>
+          </div>
+          <div class="about-floating-tag about-floating-tag-1">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#C9956A" stroke-width="2.2"><polyline points="20 6 9 17 4 12"/></svg>
+            Ingyenes útmutató
+          </div>
+          <div class="about-floating-tag about-floating-tag-2">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#C4A8E8" stroke-width="2.2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+            Kezdő vállalkozóknak
+          </div>
+        </div>
+
+        <div class="about-text reveal reveal-delay-2">
+          <span class="section-label">Kinek szól ez az útmutató?</span>
+          <h2 class="section-title" style="text-align:left;">Neked, ha te is<br/><span class="gradient-text">itt tartasz most</span></h2>
+          <div class="gradient-divider-left"></div>
+
+          <ul class="about-list" style="margin-top:1.5rem;">
+            <li>
+              <span class="check-icon">
+                <svg viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12"/></svg>
+              </span>
+              Van egy ötleted, terméked vagy tudásod, amit szeretnél online értékesíteni
+            </li>
+            <li>
+              <span class="check-icon">
+                <svg viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12"/></svg>
+              </span>
+              A technikai háttér eddig riasztónak tűnt, és nem tudtad, hol kezdj el
+            </li>
+            <li>
+              <span class="check-icon">
+                <svg viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12"/></svg>
+              </span>
+              Szeretnél egy rendszert, ami automatikusan gyűjti az érdeklődőket
+            </li>
+            <li>
+              <span class="check-icon">
+                <svg viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12"/></svg>
+              </span>
+              Nem akarsz fizetni drága eszközökért az induláshoz — ingyenesen szeretnél elindulni
+            </li>
+            <li>
+              <span class="check-icon">
+                <svg viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12"/></svg>
+              </span>
+              Komolyan gondolod az online jelenléted felépítését és készen állsz cselekedni
+            </li>
+          </ul>
+
+          <div style="margin-top:2rem;">
+            <a href="#cta" class="btn-primary">
+              Igen, ez nekem szól →
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       STEPS SUMMARY
+  ============================================================ -->
+  <section id="steps">
+    <!-- Decorative -->
+    <svg class="deco-shape deco-shape-3" style="bottom:10%;right:4%;width:80px;height:80px;opacity:0.3;" viewBox="0 0 80 80" fill="none">
+      <rect x="10" y="10" width="60" height="60" rx="12" fill="none" stroke="#C4A8E8" stroke-width="2"/>
+      <rect x="20" y="20" width="40" height="40" rx="8" fill="#F2A8C4" opacity="0.3"/>
+    </svg>
+
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="section-label">A folyamat</span>
+        <h2 class="section-title">Összesen <span class="gradient-text-gold">~50 perc</span> — és kész a rendszered</h2>
+        <div class="gradient-divider"></div>
+        <p class="section-desc" style="margin-top:1rem;">
+          Négy egyszerű lépés, és van egy aktív, működő feliratkozó rendszered. Nem kell napokat tölteni a beállítással.
+        </p>
+      </div>
+
+      <div class="steps-grid">
+        <div class="step-card reveal reveal-delay-1">
+          <div class="step-number">01</div>
+          <div class="step-title">Systeme.io fiók megnyitása</div>
+          <div class="step-desc">Regisztrálj ingyenesen — hitelkártyát nem kérnek, nem jár le automatikusan. Csak keresztneved, e-mail és jelszó kell.</div>
+          <div class="step-time">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+            5 perc
+          </div>
+        </div>
+
+        <div class="step-card reveal reveal-delay-2">
+          <div class="step-number">02</div>
+          <div class="step-title">Feliratkozó oldal felépítése és publikálása</div>
+          <div class="step-desc">Funnel létrehozása, opt-in oldal szerkesztése drag-and-drop szerkesztővel, főcím és alcím megírása, közzététel.</div>
+          <div class="step-time">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+            20 perc
+          </div>
+        </div>
+
+        <div class="step-card reveal reveal-delay-3">
+          <div class="step-number">03</div>
+          <div class="step-title">Automatikus üdvözlő e-mail megírása</div>
+          <div class="step-desc">Személyes, emberi hangvételű üdvözlő e-mail, ami azonnal kimegy minden új feliratkozónak. A cél: bizalomépítés, nem azonnali eladás.</div>
+          <div class="step-time">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+            15 perc
+          </div>
+        </div>
+
+        <div class="step-card reveal reveal-delay-4">
+          <div class="step-number">04</div>
+          <div class="step-title">Automatizmus összekötése a formmal</div>
+          <div class="step-desc">Trigger beállítása: "Subscribed to a form" → "Subscribe to campaign". Tesztelés: iratkozz fel saját magad és ellenőrizd, hogy megérkezik-e az e-mail.</div>
+          <div class="step-time">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+            5 perc
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       PRO TIPS
+  ============================================================ -->
+  <section id="tips">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="section-label">Profi tippek</span>
+        <h2 class="section-title">Amit a legtöbben <span class="gradient-text">nem tudnak</span></h2>
+        <div class="gradient-divider"></div>
+      </div>
+
+      <div class="tips-grid">
+        <div class="tip-card reveal reveal-delay-1">
+          <div class="tip-icon-wrap">💡</div>
+          <div class="tip-content">
+            <div class="tip-label">Pro tipp #1</div>
+            <div class="tip-text">Ne ragadj bele a dizájnba! A szöveg fontosabb, mint a szín. Egy egyszerű, tiszta oldal jó üzenettel sokkal jobban konvertál, mint egy gyönyörű, de homályos szövegű oldal.</div>
+          </div>
+        </div>
+
+        <div class="tip-card reveal reveal-delay-2">
+          <div class="tip-icon-wrap">✉️</div>
+          <div class="tip-content">
+            <div class="tip-label">Pro tipp #2</div>
+            <div class="tip-text">Az első e-mail a legfontosabb — ezt nyitják meg a legtöbben. Legyen személyes, emberi hangvételű, ne reklámszöveg. A cél: bizalomépítés, nem azonnali eladás.</div>
+          </div>
+        </div>
+
+        <div class="tip-card reveal reveal-delay-3">
+          <div class="tip-icon-wrap">📊</div>
+          <div class="tip-content">
+            <div class="tip-label">Pro tipp #3</div>
+            <div class="tip-text">2 000 feliratkozó bőven elég az induláshoz. A legtöbb vállalkozó ezzel a számmal már stabil bevételt tud termelni — és az ingyenes csomag pontosan ennyit ad.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       NEXT STEPS
+  ============================================================ -->
+  <section id="nextsteps">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="section-label">Mi jön ezután?</span>
+        <h2 class="section-title">Az alap megvan —<br/>most <span class="gradient-text">értékesítési géppé</span> alakítod</h2>
+        <div class="gradient-divider"></div>
+        <p class="section-desc" style="margin-top:1rem;">
+          Most, hogy megvan az alap, a következő lépés az, hogy ezt a rendszert értékesítési gépé alakítsd.
+        </p>
+      </div>
+
+      <div class="nextsteps-grid">
+        <div class="nextstep-item reveal reveal-delay-1">
+          <div class="nextstep-dot"></div>
+          <div class="nextstep-text"><strong>Sales oldal</strong> — feliratkozó oldalad mellé egy értékesítési oldal készítése</div>
+        </div>
+        <div class="nextstep-item reveal reveal-delay-2">
+          <div class="nextstep-dot"></div>
+          <div class="nextstep-text"><strong>E-mail sorozat</strong> — több e-mail az automatizmusban (értékadó + ajánlati sorozat)</div>
+        </div>
+        <div class="nextstep-item reveal reveal-delay-3">
+          <div class="nextstep-dot"></div>
+          <div class="nextstep-text"><strong>Online kurzus</strong> — kurzusod feltöltése és értékesítése a Systeme.io-ban</div>
+        </div>
+        <div class="nextstep-item reveal reveal-delay-4">
+          <div class="nextstep-dot"></div>
+          <div class="nextstep-text"><strong>Evergreen rendszer</strong> — ami akkor is elad, amikor te alszol</div>
+        </div>
+      </div>
+
+      <!-- Upsell card -->
+      <div class="reveal" style="margin-top:3rem;">
+        <div style="
+          background: linear-gradient(135deg, rgba(242,168,196,0.15), rgba(196,168,232,0.2), rgba(168,196,240,0.15));
+          border: 1.5px solid rgba(255,255,255,0.8);
+          border-radius: var(--radius-lg);
+          padding: 2.5rem 2.8rem;
+          backdrop-filter: blur(16px);
+          box-shadow: var(--shadow-card);
+          max-width: 680px;
+          margin: 0 auto;
+          text-align: center;
+        ">
+          <span class="section-label" style="display:block;text-align:center;">Haladó szint</span>
+          <h3 style="font-family:var(--font-serif);font-size:1.8rem;font-weight:700;color:var(--charcoal);margin-bottom:0.7rem;">Systeme.io Alapkurzus</h3>
+          <p style="font-size:0.92rem;color:var(--charcoal-light);margin-bottom:1.5rem;line-height:1.75;">
+            Teljes rendszer lépésről-lépésre, hogy ne maradjon kérdőjel benned. Sales funnel, e-mail automatizmusok, online kurzus feltöltése és evergreen értékesítési rendszer.
+          </p>
+          <a href="https://tanfolyamokonline.hu" target="_blank" class="btn-primary" style="display:inline-flex;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            Megnézem a kurzust
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       CTA SECTION
+  ============================================================ -->
+  <section id="cta">
+    <div class="cta-orb-1"></div>
+    <div class="cta-orb-2"></div>
+
+    <!-- Decorative shapes -->
+    <svg class="deco-shape" style="top:10%;left:4%;width:90px;height:90px;opacity:0.3;" viewBox="0 0 90 90" fill="none">
+      <rect x="10" y="20" width="55" height="55" rx="10" fill="url(#gcta1)" opacity="0.7"/>
+      <rect x="30" y="8" width="55" height="55" rx="10" fill="url(#gcta2)" opacity="0.4"/>
+      <defs>
+        <linearGradient id="gcta1" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stop-color="#F2A8C4"/>
+          <stop offset="100%" stop-color="#C4A8E8"/>
+        </linearGradient>
+        <linearGradient id="gcta2" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stop-color="#C4A8E8"/>
+          <stop offset="100%" stop-color="#A8C4F0"/>
+        </linearGradient>
+      </defs>
+    </svg>
+    <svg class="deco-shape deco-shape-3" style="bottom:12%;right:5%;width:70px;height:70px;opacity:0.3;" viewBox="0 0 70 70" fill="none">
+      <circle cx="35" cy="35" r="30" fill="#C4A8E8" opacity="0.5"/>
+      <circle cx="35" cy="35" r="18" fill="#F2A8C4" opacity="0.4"/>
+    </svg>
+
+    <div class="container">
+      <div class="cta-inner reveal">
+        <span class="section-label" style="display:block;text-align:center;">Ingyenes letöltés</span>
+        <h2 class="cta-title">Készen állsz az első<br/><span class="gradient-text">működő rendszeredre?</span></h2>
+        <p class="cta-desc">
+          Add meg az e-mail címedet, és azonnal megkapod az útmutatót — ingyen, hitelkártya nélkül. Kezdjük el együtt!
+        </p>
+
+        <form class="cta-form" onsubmit="handleSubmit(event)">
+          <input
+            type="email"
+            class="cta-input"
+            placeholder="E-mail címed..."
+            required
+            id="emailInput"
+          />
+          <button type="submit" class="btn-primary">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Kérem az útmutatót!
+          </button>
+        </form>
+
+        <p class="cta-note" id="successMsg" style="display:none;color:var(--gold);font-weight:600;margin-top:0.8rem;">
+          ✓ Köszönöm! Hamarosan megkapod az útmutatót. Nézd meg a beérkező leveleid!
+        </p>
+        <p class="cta-note">Spam-mentes. Bármikor leiratkozhatsz. 100% ingyenes.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       FOOTER
+  ============================================================ -->
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-logo">Fischer <span>Zsófi</span></div>
+      <ul class="footer-links">
+        <li><a href="#benefits">Mit tanulsz?</a></li>
+        <li><a href="#chapters">Tartalom</a></li>
+        <li><a href="#about">Rólam</a></li>
+        <li><a href="https://tanfolyamokonline.hu" target="_blank">tanfolyamokonline.hu</a></li>
+      </ul>
+      <div class="footer-copy">© 2024 Fischer Zsófi · tanfolyamokonline.hu</div>
+    </div>
+  </footer>
+
+  <!-- ============================================================
+       JAVASCRIPT
+  ============================================================ -->
+  <script>
+    // ── Scroll reveal ──────────────────────────────────────────
+    const revealEls = document.querySelectorAll('.reveal');
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+
+    revealEls.forEach(el => observer.observe(el));
+
+    // ── Navbar scroll effect ───────────────────────────────────
+    const nav = document.querySelector('nav');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 60) {
+        nav.style.background = 'rgba(255,255,255,0.92)';
+        nav.style.boxShadow = '0 2px 24px rgba(196,168,232,0.15)';
+      } else {
+        nav.style.background = 'rgba(255,255,255,0.72)';
+        nav.style.boxShadow = 'none';
+      }
+    });
+
+    // ── CTA form ───────────────────────────────────────────────
+    function handleSubmit(e) {
+      e.preventDefault();
+      const input = document.getElementById('emailInput');
+      const msg = document.getElementById('successMsg');
+      if (input.value) {
+        input.style.display = 'none';
+        e.target.querySelector('button').style.display = 'none';
+        msg.style.display = 'block';
+      }
+    }
+
+    // ── Smooth scroll for anchor links ─────────────────────────
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+      a.addEventListener('click', e => {
+        const target = document.querySelector(a.getAttribute('href'));
+        if (target) {
+          e.preventDefault();
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      });
+    });
+
+    // ── Parallax orbs on mouse move ────────────────────────────
+    document.addEventListener('mousemove', (e) => {
+      const x = (e.clientX / window.innerWidth - 0.5) * 2;
+      const y = (e.clientY / window.innerHeight - 0.5) * 2;
+      const orbs = document.querySelectorAll('.hero-orb');
+      orbs.forEach((orb, i) => {
+        const factor = (i + 1) * 8;
+        orb.style.transform = `translate(${x * factor}px, ${y * factor}px)`;
+      });
+    });
+  </script>
+
+</body>
+</html>
